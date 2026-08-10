@@ -2,836 +2,348 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>tá no carrinho</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>tanambi — seu mercado completo na palma da mão</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --blue:#104799;
-    --blue-dark:#0b3676;
-    --green:#3ba85c;
-    --orange:#d67636;
-    --off:#FAFAF7;
-    --gray:#8a94a6;
-    --line:#eceef2;
-    --text:#1b2430;
-    --radius:16px;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    font-family:'Poppins',sans-serif;
-    background:#dfe3ea;
-    color:var(--text);
-    display:flex;
-    justify-content:center;
-    padding:24px 0;
-  }
-  .device{
-    width:390px;
-    max-width:100vw;
-    background:var(--off);
-    border-radius:38px;
-    box-shadow:0 30px 60px rgba(16,71,153,.25);
-    overflow:hidden;
-    position:relative;
-    border:8px solid #101418;
-    min-height:844px;
-  }
-  .statusbar{
-    height:28px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:0 22px; font-size:12px; font-weight:600; color:var(--text);
-    background:var(--off);
-  }
-  .screen{
-    display:none;
-    flex-direction:column;
-    min-height:816px;
-    animation:fadeIn .25s ease;
-    padding-bottom:78px;
-    position:relative;
-  }
-  .screen.active{display:flex;}
-  @keyframes fadeIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
-
-  /* ---------- Logo ---------- */
-  .logo-mark{display:inline-flex; align-items:flex-end; position:relative;}
-  .logo-svg{display:block;}
-  .brand-wrap{display:flex; align-items:center; gap:8px;}
-  .brand-name{font-weight:800; font-size:22px; color:var(--blue); letter-spacing:-.5px;}
-  .brand-name.light{color:#fff;}
-  .tagline{font-size:11px; color:var(--gray); font-weight:500;}
-  .tagline.light{color:rgba(255,255,255,.85);}
-
-  /* ---------- Buttons ---------- */
-  .btn{
-    border:none; border-radius:14px; font-family:inherit; font-weight:600;
-    font-size:15px; padding:15px; cursor:pointer; width:100%; transition:transform .1s;
-  }
-  .btn:active{transform:scale(.97);}
-  .btn-primary{background:var(--green); color:#fff;}
-  .btn-outline{background:#fff; color:var(--blue); border:1.5px solid var(--blue);}
-  .btn-blue{background:var(--blue); color:#fff;}
-  .btn-ghost{background:transparent; color:var(--gray); font-weight:500;}
-  .link{color:var(--blue); font-weight:600; cursor:pointer;}
-
-  /* ---------- Onboarding ---------- */
-  .onb{
-    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    background:var(--blue); color:#fff; padding:40px 32px; text-align:center; gap:18px;
-  }
-  .onb-icon{width:120px; height:120px; display:flex; align-items:center; justify-content:center;}
-  .onb h1{font-size:24px; font-weight:700;}
-  .onb p{font-size:14px; color:rgba(255,255,255,.85); line-height:1.5;}
-  .dots{display:flex; gap:6px; justify-content:center; margin:10px 0;}
-  .dot{width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.35);}
-  .dot.active{background:#fff; width:20px; border-radius:4px;}
-  .onb-actions{width:100%; max-width:280px; display:flex; flex-direction:column; gap:10px; margin-top:8px;}
-  .onb .btn-outline{background:transparent; color:#fff; border-color:#fff;}
-
-  /* ---------- Generic content pad ---------- */
-  .pad{padding:20px;}
-  .field{margin-bottom:14px;}
-  .field label{font-size:12px; font-weight:600; color:var(--gray); display:block; margin-bottom:6px;}
-  .field input{
-    width:100%; border:1.5px solid var(--line); border-radius:12px; padding:13px 14px;
-    font-family:inherit; font-size:14px; background:#fff;
-  }
-  .field input:focus{outline:none; border-color:var(--blue);}
-  .center-title{text-align:center; margin-bottom:6px;}
-  .center-title h2{font-size:20px; font-weight:700;}
-  .center-title p{font-size:13px; color:var(--gray); margin-top:4px;}
-  .divider-or{display:flex; align-items:center; gap:10px; margin:16px 0; font-size:12px; color:var(--gray);}
-  .divider-or::before,.divider-or::after{content:""; flex:1; height:1px; background:var(--line);}
-  .social-row{display:flex; gap:10px;}
-  .social-btn{flex:1; border:1.5px solid var(--line); border-radius:12px; padding:12px; text-align:center; font-weight:600; font-size:13px; background:#fff;}
-  .foot-note{text-align:center; font-size:13px; color:var(--gray); margin-top:16px;}
-
-  /* ---------- Topbar (app) ---------- */
-  .topbar{
-    background:var(--blue); color:#fff; padding:14px 18px 18px;
-    border-radius:0 0 22px 22px;
-  }
-  .topbar-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
-  .loc{display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600;}
-  .loc small{display:block; font-size:10px; font-weight:400; opacity:.75;}
-  .icon-btn{width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .search-bar{
-    background:#fff; border-radius:12px; padding:11px 14px; display:flex; align-items:center; gap:8px;
-    font-size:13px; color:var(--gray);
-  }
-  .back-row{display:flex; align-items:center; gap:12px; padding:16px 18px 10px;}
-  .back-btn{width:34px; height:34px; border-radius:50%; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; cursor:pointer;}
-  .back-title{font-size:16px; font-weight:700;}
-
-  /* ---------- Sections / Cards ---------- */
-  .section{padding:16px 18px 4px;}
-  .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
-  .section-head h3{font-size:15px; font-weight:700;}
-  .section-head span{font-size:12px; color:var(--blue); font-weight:600; cursor:pointer;}
-
-  .promo-banner{
-    background:linear-gradient(120deg,var(--orange),#e6924f); border-radius:16px; padding:16px;
-    display:flex; align-items:center; justify-content:space-between; color:#fff; margin:0 18px 6px;
-  }
-  .promo-banner h4{font-size:16px; font-weight:700;}
-  .promo-banner p{font-size:11px; opacity:.9; margin-top:2px;}
-  .promo-banner button{background:#fff; color:var(--orange); border:none; border-radius:8px; padding:7px 12px; font-weight:700; font-size:11px; margin-top:6px;}
-
-  .cat-scroll{display:flex; gap:14px; overflow-x:auto; padding:14px 18px; scrollbar-width:none;}
-  .cat-scroll::-webkit-scrollbar{display:none;}
-  .cat-item{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:58px; cursor:pointer;}
-  .cat-circle{width:52px; height:52px; border-radius:16px; background:#fff; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:22px;}
-  .cat-item span{font-size:10.5px; font-weight:600; text-align:center; color:var(--text);}
-
-  .prod-scroll{display:flex; gap:12px; overflow-x:auto; padding:0 18px 6px; scrollbar-width:none;}
-  .prod-scroll::-webkit-scrollbar{display:none;}
-  .prod-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 18px;}
-  .prod-card{
-    background:#fff; border-radius:16px; padding:10px; min-width:140px; border:1px solid var(--line);
-    display:flex; flex-direction:column; gap:6px; cursor:pointer; position:relative;
-  }
-  .prod-img{
-    height:78px; border-radius:12px; background:#f2f4f7; display:flex; align-items:center; justify-content:center; font-size:34px;
-  }
-  .prod-name{font-size:12.5px; font-weight:600; line-height:1.3;}
-  .prod-unit{font-size:10px; color:var(--gray);}
-  .prod-row{display:flex; align-items:center; justify-content:space-between; margin-top:2px;}
-  .prod-price{font-size:13.5px; font-weight:700; color:var(--blue);}
-  .add-fab{
-    width:26px; height:26px; border-radius:8px; background:var(--green); color:#fff; border:none;
-    display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; cursor:pointer;
-  }
-  .badge-off{position:absolute; top:8px; left:8px; background:var(--orange); color:#fff; font-size:9px; font-weight:700; padding:3px 6px; border-radius:6px;}
-
-  /* Category list page */
-  .catlist{display:flex; flex-direction:column;}
-  .catlist-row{display:flex; align-items:center; gap:12px; padding:13px 18px; border-bottom:1px solid var(--line); cursor:pointer;}
-  .catlist-row .emoji{font-size:20px;}
-  .catlist-row.active{background:#eef3fb; border-left:3px solid var(--blue);}
-
-  .filter-chip-row{display:flex; gap:8px; padding:12px 18px; overflow-x:auto;}
-  .chip{padding:8px 14px; border-radius:20px; border:1.5px solid var(--line); font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; background:#fff;}
-  .chip.active{background:var(--blue); color:#fff; border-color:var(--blue);}
-
-  /* Product detail */
-  .pd-hero{background:#fff; padding:30px; display:flex; align-items:center; justify-content:center; font-size:90px;}
-  .pd-body{padding:18px; flex:1;}
-  .pd-body h2{font-size:19px; font-weight:700;}
-  .pd-body .unit{font-size:12px; color:var(--gray); margin-top:2px;}
-  .pd-rating{display:flex; align-items:center; gap:6px; margin:8px 0; font-size:12px; font-weight:600; color:var(--gray);}
-  .pd-price{font-size:22px; font-weight:800; color:var(--blue); margin:8px 0;}
-  .pd-desc{font-size:13px; color:#4b5566; line-height:1.6; margin-bottom:14px;}
-  .qty-row{display:flex; align-items:center; gap:14px; background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:8px 14px; width:fit-content;}
-  .qty-btn{width:26px; height:26px; border-radius:8px; border:none; background:#f2f4f7; font-size:16px; font-weight:700; cursor:pointer;}
-  .sticky-bottom{
-    position:absolute; bottom:0; left:0; right:0; background:#fff; padding:14px 18px 22px;
-    border-top:1px solid var(--line); display:flex; gap:12px; align-items:center;
-  }
-
-  /* Cart */
-  .cart-item{display:flex; gap:12px; padding:12px 18px; border-bottom:1px solid var(--line); align-items:center;}
-  .cart-img{width:56px; height:56px; border-radius:12px; background:#f2f4f7; display:flex; align-items:center; justify-content:center; font-size:26px;}
-  .cart-info{flex:1;}
-  .cart-info h4{font-size:13.5px; font-weight:600;}
-  .cart-info .sub{font-size:11px; color:var(--gray);}
-  .cart-qty{display:flex; align-items:center; gap:8px;}
-  .cart-qty button{width:22px; height:22px; border-radius:6px; border:1px solid var(--line); background:#fff; font-weight:700; cursor:pointer;}
-  .summary-row{display:flex; justify-content:space-between; font-size:13px; padding:6px 0; color:#4b5566;}
-  .summary-row.total{font-weight:700; font-size:15px; color:var(--text); border-top:1px solid var(--line); margin-top:6px; padding-top:12px;}
-  .empty-state{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:40px; text-align:center; color:var(--gray);}
-  .empty-state .em{font-size:52px;}
-
-  /* Checkout / payment */
-  .option-card{display:flex; align-items:center; gap:12px; padding:14px; border:1.5px solid var(--line); border-radius:14px; margin-bottom:10px; cursor:pointer; background:#fff;}
-  .option-card.selected{border-color:var(--blue); background:#eef3fb;}
-  .option-icon{width:38px; height:38px; border-radius:10px; background:#f2f4f7; display:flex; align-items:center; justify-content:center; font-size:18px;}
-  .option-card h5{font-size:13.5px; font-weight:600;}
-  .option-card p{font-size:11px; color:var(--gray);}
-  .radio{width:18px; height:18px; border-radius:50%; border:2px solid var(--line); margin-left:auto;}
-  .option-card.selected .radio{border-color:var(--blue); background:radial-gradient(circle,var(--blue) 40%,#fff 42%);}
-
-  /* Orders */
-  .order-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px; margin:0 18px 12px;}
-  .order-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
-  .order-top h5{font-size:13.5px; font-weight:700;}
-  .status-pill{font-size:10px; font-weight:700; padding:4px 9px; border-radius:20px;}
-  .status-pill.progress{background:#fff3e8; color:var(--orange);}
-  .status-pill.done{background:#e8f6ec; color:var(--green);}
-  .order-meta{font-size:11px; color:var(--gray);}
-  .order-total{font-weight:700; font-size:13px; margin-top:6px;}
-
-  .track-step{display:flex; gap:12px; padding:0 18px;}
-  .track-line{display:flex; flex-direction:column; align-items:center;}
-  .track-dot{width:14px; height:14px; border-radius:50%; background:var(--green); flex-shrink:0;}
-  .track-dot.pending{background:var(--line);}
-  .track-bar{width:2px; flex:1; background:var(--green); min-height:28px;}
-  .track-bar.pending{background:var(--line);}
-  .track-content{padding-bottom:22px;}
-  .track-content h5{font-size:13px; font-weight:600;}
-  .track-content p{font-size:11px; color:var(--gray);}
-
-  /* Profile */
-  .profile-head{display:flex; align-items:center; gap:14px; padding:20px 18px; background:#fff; border-bottom:1px solid var(--line);}
-  .avatar{width:56px; height:56px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px;}
-  .list-row{display:flex; align-items:center; gap:12px; padding:15px 18px; border-bottom:1px solid var(--line); cursor:pointer; background:#fff;}
-  .list-row .li-icon{width:34px; height:34px; border-radius:10px; background:#eef3fb; display:flex; align-items:center; justify-content:center; font-size:15px;}
-  .list-row span.lbl{flex:1; font-size:13.5px; font-weight:500;}
-  .list-row .chev{color:var(--gray);}
-  .toggle{width:40px; height:24px; border-radius:20px; background:var(--line); position:relative; cursor:pointer; flex-shrink:0;}
-  .toggle.on{background:var(--green);}
-  .toggle::after{content:""; position:absolute; width:18px; height:18px; border-radius:50%; background:#fff; top:3px; left:3px; transition:.2s;}
-  .toggle.on::after{left:19px;}
-
-  /* Bottom nav */
-  .bottomnav{
-    position:absolute; bottom:0; left:0; right:0; height:72px; background:#fff; border-top:1px solid var(--line);
-    display:flex; align-items:center; justify-content:space-around; padding-bottom:10px;
-  }
-  .nav-item{display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; color:var(--gray); font-size:9.5px; font-weight:600;}
-  .nav-item.active{color:var(--blue);}
-  .nav-item .ic{font-size:19px;}
-
-  .toast{
-    position:absolute; bottom:88px; left:18px; right:18px; background:var(--text); color:#fff;
-    padding:12px 16px; border-radius:12px; font-size:12.5px; font-weight:500; text-align:center;
-    opacity:0; transform:translateY(10px); transition:.25s; pointer-events:none; z-index:50;
-  }
-  .toast.show{opacity:1; transform:translateY(0);}
-
-  .cart-badge{
-    position:absolute; top:-4px; right:-6px; background:var(--orange); color:#fff; font-size:9px; font-weight:700;
-    width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="device" id="device">
-  <div class="statusbar"><span>09:41</span><span>●●● 5G 🔋</span></div>
+<div class="phone">
+  <div class="screen" id="screen-root">
 
-  <!-- ONBOARDING -->
-  <div class="screen active" id="scr-onb1">
-    <div class="onb">
-      <div class="onb-icon">
-        <svg width="90" height="100" viewBox="0 0 90 100" class="logo-svg">
-          <rect x="30" y="0" width="20" height="70" rx="10" fill="#fff"/>
-          <rect x="50" y="18" width="26" height="12" rx="6" fill="#3ba85c"/>
-          <path d="M20 62 Q10 70 20 78 L52 78 Q60 78 60 70 L60 62 Z" fill="#fff"/>
-          <circle cx="26" cy="86" r="7" fill="#d67636"/>
-          <circle cx="50" cy="86" r="7" fill="#d67636"/>
-        </svg>
+    <!-- ONBOARDING -->
+    <section class="view active" id="view-onboarding">
+      <div class="onb-hero">
+        <div class="onb-topbar">
+          <span class="logo-mark">t<span class="dot"></span></span>
+          <span class="logo-word">tanambi</span>
+        </div>
+        <h1>Seu mercado completo<br>na palma da mão.</h1>
+        <p>Mais praticidade, mais economia,<br>mais tempo para você.</p>
       </div>
-      <h1>Bem-vindo ao<br>tá no carrinho</h1>
-      <p>Seu mercado completo na palma da mão, com mais praticidade e economia.</p>
-      <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="onb-actions">
-        <button class="btn btn-primary" onclick="go('scr-onb2')">Continuar</button>
+      <div class="onb-sheet">
+        <div class="onb-dots">
+          <span class="d active"></span><span class="d"></span><span class="d"></span>
+        </div>
+        <button class="btn btn-primary" data-nav="view-login">Começar agora</button>
+        <button class="btn btn-ghost" data-nav="view-home">Já tenho conta</button>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="screen" id="scr-onb2">
-    <div class="onb">
-      <div style="font-size:70px;">🛵</div>
-      <h1>Entrega rápida<br>e segura</h1>
-      <p>Receba suas compras no conforto da sua casa, com todo cuidado no transporte.</p>
-      <div class="dots"><div class="dot"></div><div class="dot active"></div><div class="dot"></div></div>
-      <div class="onb-actions">
-        <button class="btn btn-primary" onclick="go('scr-onb3')">Continuar</button>
+    <!-- LOGIN -->
+    <section class="view" id="view-login">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-onboarding">←</button>
+        <span class="topnav-title">Entrar</span>
+        <span style="width:36px"></span>
       </div>
-    </div>
-  </div>
-
-  <div class="screen" id="scr-onb3">
-    <div class="onb">
-      <div style="font-size:70px;">📍</div>
-      <h1>Permitir acesso<br>à localização</h1>
-      <p>Para ver ofertas e prazos de entrega da sua região.</p>
-      <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot active"></div></div>
-      <div class="onb-actions">
-        <button class="btn btn-primary" onclick="go('scr-login')">Permitir</button>
-        <button class="btn btn-outline" onclick="go('scr-login')">Agora não</button>
+      <div class="pad">
+        <div class="brand-center">
+          <span class="logo-mark lg">t<span class="dot"></span></span>
+          <span class="logo-word lg">tanambi</span>
+        </div>
+        <form id="login-form">
+          <label class="field">
+            <span>E-mail</span>
+            <input type="email" placeholder="voce@email.com" required>
+          </label>
+          <label class="field">
+            <span>Senha</span>
+            <input type="password" placeholder="••••••••" required>
+          </label>
+          <a class="link" href="#">Esqueci minha senha</a>
+          <button class="btn btn-primary" type="submit">Entrar</button>
+        </form>
+        <p class="muted center">Não tem conta? <a class="link" data-nav="view-signup">Cadastre-se</a></p>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- LOGIN -->
-  <div class="screen" id="scr-login">
-    <div class="pad" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-      <div class="brand-wrap" style="justify-content:center; margin-bottom:26px; flex-direction:column; align-items:center; gap:4px;">
-        <svg width="46" height="52" viewBox="0 0 90 100"><rect x="30" y="0" width="20" height="70" rx="10" fill="#104799"/><rect x="50" y="18" width="26" height="12" rx="6" fill="#3ba85c"/><path d="M20 62 Q10 70 20 78 L52 78 Q60 78 60 70 L60 62 Z" fill="#104799"/><circle cx="26" cy="86" r="7" fill="#d67636"/><circle cx="50" cy="86" r="7" fill="#d67636"/></svg>
-        <div class="brand-name">tá no carrinho</div>
+    <!-- SIGNUP -->
+    <section class="view" id="view-signup">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-login">←</button>
+        <span class="topnav-title">Criar conta</span>
+        <span style="width:36px"></span>
       </div>
-      <div class="center-title"><h2>Olá! 👋</h2><p>Entre na sua conta</p></div>
-      <div class="field" style="margin-top:16px;"><label>E-mail ou telefone</label><input type="text" placeholder="Digite seu e-mail"></div>
-      <div class="field"><label>Senha</label><input type="password" placeholder="Digite sua senha"></div>
-      <div style="text-align:right; font-size:12px;" class="link" onclick="toast('Link de recuperação enviado')">Esqueci minha senha</div>
-      <button class="btn btn-primary" style="margin-top:16px;" onclick="go('scr-home')">Entrar</button>
-      <div class="divider-or">ou continue com</div>
-      <div class="social-row">
-        <div class="social-btn">🔵 Google</div>
-        <div class="social-btn">🍎 Apple</div>
+      <div class="pad">
+        <form id="signup-form">
+          <label class="field">
+            <span>Nome completo</span>
+            <input type="text" placeholder="Seu nome" required>
+          </label>
+          <label class="field">
+            <span>E-mail</span>
+            <input type="email" placeholder="voce@email.com" required>
+          </label>
+          <label class="field">
+            <span>CEP de entrega</span>
+            <input type="text" placeholder="00000-000" required>
+          </label>
+          <label class="field">
+            <span>Senha</span>
+            <input type="password" placeholder="Crie uma senha" required>
+          </label>
+          <button class="btn btn-primary" type="submit">Criar conta</button>
+        </form>
       </div>
-      <div class="foot-note">Não tem conta? <span class="link" onclick="go('scr-signup')">Criar agora</span></div>
-    </div>
-  </div>
+    </section>
 
-  <div class="screen" id="scr-signup">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-login')">←</div><div class="back-title">Criar conta</div></div>
-    <div class="pad">
-      <div class="field"><label>Nome completo</label><input type="text" placeholder="Seu nome"></div>
-      <div class="field"><label>E-mail</label><input type="text" placeholder="seuemail@exemplo.com"></div>
-      <div class="field"><label>Telefone</label><input type="text" placeholder="(11) 98765-4321"></div>
-      <div class="field"><label>Senha</label><input type="password" placeholder="Crie uma senha"></div>
-      <div class="field"><label>Confirmar senha</label><input type="password" placeholder="Confirme sua senha"></div>
-      <button class="btn btn-primary" onclick="go('scr-sms')">Criar conta</button>
-      <div class="foot-note">Já tem conta? <span class="link" onclick="go('scr-login')">Entrar</span></div>
-    </div>
-  </div>
-
-  <div class="screen" id="scr-sms">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-signup')">←</div><div class="back-title">Verificação</div></div>
-    <div class="pad" style="text-align:center;">
-      <p style="font-size:13px; color:var(--gray); margin-bottom:20px;">Enviamos um código para<br><strong>(11) 98765-4321</strong></p>
-      <div style="display:flex; gap:8px; justify-content:center; margin-bottom:20px;">
-        <input maxlength="1" style="width:40px; height:48px; text-align:center; border:1.5px solid var(--line); border-radius:10px; font-size:18px;">
-        <input maxlength="1" style="width:40px; height:48px; text-align:center; border:1.5px solid var(--line); border-radius:10px; font-size:18px;">
-        <input maxlength="1" style="width:40px; height:48px; text-align:center; border:1.5px solid var(--line); border-radius:10px; font-size:18px;">
-        <input maxlength="1" style="width:40px; height:48px; text-align:center; border:1.5px solid var(--line); border-radius:10px; font-size:18px;">
-      </div>
-      <p style="font-size:12px; color:var(--gray); margin-bottom:20px;">Reenviar código em 00:25</p>
-      <button class="btn btn-primary" onclick="go('scr-home')">Confirmar</button>
-    </div>
-  </div>
-
-  <!-- HOME -->
-  <div class="screen" id="scr-home">
-    <div class="topbar">
-      <div class="topbar-row">
-        <div class="brand-wrap">
-          <svg width="26" height="30" viewBox="0 0 90 100"><rect x="30" y="0" width="20" height="70" rx="10" fill="#fff"/><rect x="50" y="18" width="26" height="12" rx="6" fill="#3ba85c"/><path d="M20 62 Q10 70 20 78 L52 78 Q60 78 60 70 L60 62 Z" fill="#fff"/><circle cx="26" cy="86" r="7" fill="#d67636"/><circle cx="50" cy="86" r="7" fill="#d67636"/></svg>
+    <!-- HOME -->
+    <section class="view" id="view-home">
+      <div class="home-header">
+        <div class="home-header-row">
           <div>
-            <div class="brand-name light" style="font-size:14px;">tá no carrinho</div>
+            <span class="muted small">Entregar em</span>
+            <div class="address">Rua das Palmeiras, 120 ▾</div>
+          </div>
+          <button class="icon-btn round" data-nav="view-profile">👤</button>
+        </div>
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="Buscar arroz, frutas, limpeza...">
+        </div>
+      </div>
+
+      <div class="scroll-area">
+        <div class="promo-banner">
+          <div>
+            <strong>Seu mercado completo<br>na palma da mão.</strong>
+            <span class="promo-tag">Frete grátis acima de R$ 99</span>
           </div>
         </div>
-        <div style="display:flex; gap:8px;">
-          <div class="icon-btn" onclick="toast('Você tem 2 notificações')">🔔</div>
-          <div class="icon-btn" style="position:relative;" onclick="go('scr-cart')">🛒<span class="cart-badge" id="cart-badge-home">0</span></div>
+
+        <h3 class="section-title">Categorias</h3>
+        <div class="cat-row">
+          <div class="cat-chip active">🥦 Hortifruti</div>
+          <div class="cat-chip">🥩 Açougue</div>
+          <div class="cat-chip">🧴 Limpeza</div>
+          <div class="cat-chip">🥫 Mercearia</div>
+          <div class="cat-chip">🧊 Congelados</div>
+        </div>
+
+        <div class="section-head">
+          <h3 class="section-title">Ofertas da semana</h3>
+          <a class="link small">Ver tudo</a>
+        </div>
+        <div class="product-grid" id="product-grid"></div>
+      </div>
+
+      <nav class="bottom-nav">
+        <button class="nav-item active" data-nav="view-home"><span>🏠</span>Início</button>
+        <button class="nav-item" data-nav="view-search"><span>🔍</span>Buscar</button>
+        <button class="nav-item" data-nav="view-cart"><span>🛒</span>Carrinho<span class="badge" id="cart-badge">0</span></button>
+        <button class="nav-item" data-nav="view-orders"><span>📦</span>Pedidos</button>
+        <button class="nav-item" data-nav="view-profile"><span>👤</span>Perfil</button>
+      </nav>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="view" id="view-search">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-home">←</button>
+        <span class="topnav-title">Buscar</span>
+        <span style="width:36px"></span>
+      </div>
+      <div class="pad">
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="text" placeholder="O que você procura hoje?" id="search-input">
+        </div>
+        <h3 class="section-title">Buscas populares</h3>
+        <div class="cat-row wrap">
+          <div class="cat-chip">Banana</div>
+          <div class="cat-chip">Leite</div>
+          <div class="cat-chip">Café</div>
+          <div class="cat-chip">Detergente</div>
+          <div class="cat-chip">Frango</div>
         </div>
       </div>
-      <div class="loc" style="margin-bottom:10px;">📍 Entregar em: Av. Paulista, 1000 <small>▾ prazo 25-35 min</small></div>
-      <div class="search-bar" onclick="go('scr-search')">🔍 Buscar produtos, marcas...</div>
-    </div>
-
-    <div class="promo-banner" style="margin-top:16px;">
-      <div>
-        <h4>Ofertas da semana</h4>
-        <p>Até 50% OFF em hortifruti</p>
-        <button onclick="go('scr-catlist')">Ver ofertas</button>
+      <div class="scroll-area pad-top-0">
+        <div class="product-grid" id="search-grid"></div>
       </div>
-      <div style="font-size:40px;">🍎</div>
-    </div>
+    </section>
 
-    <div class="section-head" style="padding:16px 18px 0;"><h3>Categorias</h3></div>
-    <div class="cat-scroll" id="home-cats"></div>
-
-    <div class="section-head" style="padding:6px 18px 0;"><h3>Ofertas do dia</h3><span onclick="go('scr-catlist')">Ver tudo</span></div>
-    <div class="prod-scroll" id="home-offers"></div>
-
-    <div class="section-head" style="padding:14px 18px 0;"><h3>Recomendados para você</h3><span onclick="go('scr-catlist')">Ver tudo</span></div>
-    <div class="prod-grid" id="home-reco" style="margin-bottom:16px;"></div>
-
-    <div id="nav-home"></div>
-  </div>
-
-  <!-- SEARCH -->
-  <div class="screen" id="scr-search">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-home')">←</div><div class="search-bar" style="flex:1; background:#fff; border:1.5px solid var(--line);">🔍 Buscar produtos...</div></div>
-    <div class="section"><p style="font-size:11px; font-weight:700; color:var(--gray); margin-bottom:8px;">PESQUISAS RECENTES</p>
-      <div style="display:flex; flex-direction:column;">
-        <div class="list-row" style="border:none; padding:8px 0;" onclick="openCategory('Padaria')"><span class="li-icon">🕐</span><span class="lbl">Pão de forma</span></div>
-        <div class="list-row" style="border:none; padding:8px 0;" onclick="openCategory('Hortifruti')"><span class="li-icon">🕐</span><span class="lbl">Maçã</span></div>
+    <!-- PRODUCT DETAIL -->
+    <section class="view" id="view-product">
+      <div class="topnav transparent">
+        <button class="icon-btn light" data-nav="view-home">←</button>
+        <span></span>
+        <button class="icon-btn light">♡</button>
       </div>
-    </div>
-    <div class="section"><p style="font-size:11px; font-weight:700; color:var(--gray); margin-bottom:8px;">POPULARES</p>
-      <div class="filter-chip-row" style="padding:0;">
-        <div class="chip" onclick="openCategory('Bebidas')">Café</div>
-        <div class="chip" onclick="openCategory('Bebidas')">Queijo</div>
-        <div class="chip" onclick="openCategory('Congelados')">Frango</div>
-        <div class="chip" onclick="openCategory('Padaria')">Ovos</div>
+      <div class="product-hero" id="product-hero">🍎</div>
+      <div class="product-sheet">
+        <span class="tag" id="product-cat">Hortifruti</span>
+        <h2 id="product-name">Maçã Gala</h2>
+        <p class="muted" id="product-desc">Selecionada, doce e crocante. Vendida por kg.</p>
+        <div class="price-row">
+          <span class="price" id="product-price">R$ 8,90</span>
+          <span class="price-unit">/kg</span>
+        </div>
+        <div class="qty-row">
+          <span>Quantidade</span>
+          <div class="stepper">
+            <button id="qty-minus">−</button>
+            <span id="qty-value">1</span>
+            <button id="qty-plus">+</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="add-to-cart-btn">Adicionar • R$ 8,90</button>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- CATEGORY LIST -->
-  <div class="screen" id="scr-catlist">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-home')">←</div><div class="back-title" id="catlist-title">Todas as categorias</div>
-      <div style="margin-left:auto;" class="back-btn" onclick="go('scr-filters')">⚙️</div>
-    </div>
-    <div class="filter-chip-row" id="cat-chips"></div>
-    <div class="prod-grid" id="catlist-products" style="margin-top:6px;"></div>
-    <div style="height:20px;"></div>
-  </div>
-
-  <!-- FILTERS -->
-  <div class="screen" id="scr-filters">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-catlist')">←</div><div class="back-title">Filtros</div></div>
-    <div class="pad">
-      <div class="field"><label>Faixa de preço</label>
-        <div style="display:flex; align-items:center; gap:10px;"><input type="range" style="flex:1;"><span style="font-size:12px; color:var(--gray);">até R$ 50,00</span></div>
+    <!-- CART -->
+    <section class="view" id="view-cart">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-home">←</button>
+        <span class="topnav-title">Seu carrinho</span>
+        <span style="width:36px"></span>
       </div>
-      <div class="field"><label>Marca</label><input value="Todas"></div>
-      <div class="field"><label>Avaliação</label><input value="4 estrelas ou mais"></div>
-    </div>
-    <div class="sticky-bottom" style="position:relative; border:none; padding:20px;">
-      <button class="btn btn-outline" style="flex:1;" onclick="go('scr-catlist')">Limpar</button>
-      <button class="btn btn-primary" style="flex:1;" onclick="go('scr-catlist')">Aplicar filtros</button>
-    </div>
-  </div>
-
-  <!-- PRODUCT DETAIL -->
-  <div class="screen" id="scr-product">
-    <div class="back-row"><div class="back-btn" onclick="goBackFrom('scr-product')">←</div><div style="margin-left:auto; display:flex; gap:8px;"><div class="back-btn">🤍</div><div class="back-btn" onclick="go('scr-cart')">🛒</div></div></div>
-    <div class="pd-hero" id="pd-hero">🍎</div>
-    <div class="pd-body">
-      <h2 id="pd-name">Maçã Gala</h2>
-      <div class="unit" id="pd-unit">Preço por kg · Origem: Brasil</div>
-      <div class="pd-rating">⭐ <span id="pd-rating">4.8</span> <span style="color:var(--line);">|</span> <span id="pd-reviews">132 avaliações</span></div>
-      <div class="pd-price" id="pd-price">R$ 6,99</div>
-      <p class="pd-desc" id="pd-desc">A maçã Gala é doce e suculenta, perfeita para o dia a dia. Rica em fibras e vitaminas.</p>
-      <label style="font-size:12px; font-weight:600; color:var(--gray); display:block; margin-bottom:8px;">Quantidade</label>
-      <div class="qty-row">
-        <button class="qty-btn" onclick="changeQty(-1)">−</button>
-        <span id="pd-qty" style="font-weight:700; min-width:20px; text-align:center;">1</span>
-        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      <div class="scroll-area pad">
+        <div id="cart-list"></div>
+        <div class="empty-state" id="cart-empty">
+          <span class="empty-icon">🛒</span>
+          <strong>Seu carrinho está vazio</strong>
+          <p class="muted">Adicione produtos para vê-los aqui.</p>
+          <button class="btn btn-primary" data-nav="view-home">Ir às compras</button>
+        </div>
       </div>
-    </div>
-    <div class="sticky-bottom">
-      <div>
-        <div style="font-size:10px; color:var(--gray);">Total</div>
-        <div style="font-weight:700; font-size:15px;" id="pd-total">R$ 6,99</div>
+      <div class="checkout-bar" id="checkout-bar">
+        <div class="checkout-row">
+          <span class="muted">Subtotal</span>
+          <span id="cart-subtotal">R$ 0,00</span>
+        </div>
+        <div class="checkout-row">
+          <span class="muted">Entrega</span>
+          <span id="cart-delivery">R$ 7,90</span>
+        </div>
+        <div class="checkout-row total">
+          <span>Total</span>
+          <span id="cart-total">R$ 0,00</span>
+        </div>
+        <button class="btn btn-primary" data-nav="view-checkout">Fechar pedido</button>
       </div>
-      <button class="btn btn-primary" style="flex:1;" onclick="addToCartFromDetail()">Adicionar ao carrinho</button>
-    </div>
-  </div>
+    </section>
 
-  <!-- CART -->
-  <div class="screen" id="scr-cart">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-home')">←</div><div class="back-title">Meu carrinho</div></div>
-    <div id="cart-list" style="flex:1;"></div>
-    <div id="cart-empty" style="display:none;" class="empty-state"><div class="em">🛒</div><h4>Seu carrinho está vazio</h4><p>Adicione produtos para continuar</p><button class="btn btn-primary" style="margin-top:10px; width:160px;" onclick="go('scr-home')">Ver produtos</button></div>
-    <div class="pad" id="cart-summary-wrap" style="background:#fff; margin-top:auto; border-top:1px solid var(--line);">
-      <div class="summary-row"><span>Subtotal</span><span id="cart-subtotal">R$ 0,00</span></div>
-      <div class="summary-row"><span>Entrega</span><span id="cart-delivery">R$ 6,90</span></div>
-      <div class="summary-row total"><span>Total</span><span id="cart-total">R$ 0,00</span></div>
-      <button class="btn btn-primary" style="margin-top:12px;" onclick="go('scr-checkout')">Continuar para entrega</button>
-    </div>
-  </div>
+    <!-- CHECKOUT -->
+    <section class="view" id="view-checkout">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-cart">←</button>
+        <span class="topnav-title">Finalizar pedido</span>
+        <span style="width:36px"></span>
+      </div>
+      <div class="scroll-area pad">
+        <h3 class="section-title">Endereço de entrega</h3>
+        <div class="info-card">
+          <strong>Casa</strong>
+          <p class="muted">Rua das Palmeiras, 120 — Vila Nova, São Paulo/SP</p>
+          <a class="link small">Trocar endereço</a>
+        </div>
+        <h3 class="section-title">Forma de pagamento</h3>
+        <div class="info-card">
+          <div class="pay-row"><span>💳</span> Cartão de crédito •••• 4821</div>
+          <a class="link small">Trocar pagamento</a>
+        </div>
+        <h3 class="section-title">Resumo</h3>
+        <div class="checkout-row"><span class="muted">Subtotal</span><span id="ck-subtotal">R$ 0,00</span></div>
+        <div class="checkout-row"><span class="muted">Entrega</span><span>R$ 7,90</span></div>
+        <div class="checkout-row total"><span>Total</span><span id="ck-total">R$ 0,00</span></div>
+      </div>
+      <div class="checkout-bar single">
+        <button class="btn btn-primary" id="confirm-order-btn">Confirmar pedido</button>
+      </div>
+    </section>
 
-  <!-- CHECKOUT: ENDEREÇO -->
-  <div class="screen" id="scr-checkout">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-cart')">←</div><div class="back-title">Entrega</div></div>
-    <div class="section">
-      <div class="option-card selected"><span class="option-icon">🏠</span><div><h5>Casa</h5><p>Av. Paulista, 1000 — São Paulo, SP</p></div><span class="link" style="margin-left:auto; font-size:11px;">Alterar</span></div>
-      <div class="option-card"><span class="option-icon">💼</span><div><h5>Trabalho</h5><p>R. Augusta, 500 — São Paulo, SP</p></div></div>
-      <div class="option-card" style="border-style:dashed; justify-content:center; color:var(--blue); font-weight:600;" onclick="toast('Novo endereço adicionado')">+ Adicionar novo endereço</div>
-    </div>
-    <div class="section">
-      <p style="font-size:11px; font-weight:700; color:var(--gray); margin-bottom:8px;">HORÁRIO DE ENTREGA</p>
-      <div class="option-card selected"><div><h5>Entrega expressa</h5><p>Hoje, 25-35 min</p></div></div>
-      <div class="option-card"><div><h5>Agendar entrega</h5><p>Escolher data e horário</p></div></div>
-    </div>
-    <div class="pad" style="margin-top:auto;">
-      <button class="btn btn-primary" onclick="go('scr-payment')">Continuar para pagamento</button>
-    </div>
-  </div>
+    <!-- ORDER SUCCESS -->
+    <section class="view" id="view-success">
+      <div class="success-wrap">
+        <div class="success-icon">✓</div>
+        <h2>Pedido confirmado!</h2>
+        <p class="muted">Seu pedido chegará em até 40 minutos.<br>Acompanhe pelo app.</p>
+        <button class="btn btn-primary" data-nav="view-orders">Ver meu pedido</button>
+        <button class="btn btn-ghost" data-nav="view-home">Voltar ao início</button>
+      </div>
+    </section>
 
-  <!-- CHECKOUT: PAGAMENTO -->
-  <div class="screen" id="scr-payment">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-checkout')">←</div><div class="back-title">Pagamento</div></div>
-    <div class="section">
-      <div class="option-card selected" onclick="selectPay(this)"><span class="option-icon">💠</span><div><h5>PIX</h5><p>Aprovação imediata</p></div><span class="radio"></span></div>
-      <div class="option-card" onclick="selectPay(this)"><span class="option-icon">💳</span><div><h5>Cartão de Crédito</h5><p>Até 3x sem juros</p></div><span class="radio"></span></div>
-      <div class="option-card" onclick="selectPay(this)"><span class="option-icon">💳</span><div><h5>Cartão de Débito</h5><p></p></div><span class="radio"></span></div>
-      <div class="option-card" onclick="selectPay(this)"><span class="option-icon">🍽️</span><div><h5>Vale Alimentação</h5><p>VR, Sodexo, Alelo</p></div><span class="radio"></span></div>
-      <div class="option-card" onclick="selectPay(this)"><span class="option-icon">👛</span><div><h5>Carteira tá no carrinho</h5><p>Saldo disponível: R$ 32,50</p></div><span class="radio"></span></div>
-    </div>
-    <div class="section">
-      <div class="field"><label>Cupom de desconto</label><input placeholder="Digite seu cupom" id="coupon-input"></div>
-    </div>
-    <div class="pad" style="margin-top:auto; background:#fff; border-top:1px solid var(--line);">
-      <div class="summary-row"><span>Subtotal</span><span id="pay-subtotal">R$ 0,00</span></div>
-      <div class="summary-row"><span>Entrega</span><span>R$ 6,90</span></div>
-      <div class="summary-row total"><span>Total</span><span id="pay-total">R$ 0,00</span></div>
-      <button class="btn btn-primary" style="margin-top:12px;" onclick="confirmOrder()">Confirmar pedido</button>
-    </div>
-  </div>
+    <!-- ORDERS -->
+    <section class="view" id="view-orders">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-home">←</button>
+        <span class="topnav-title">Meus pedidos</span>
+        <span style="width:36px"></span>
+      </div>
+      <div class="scroll-area pad">
+        <div class="order-card">
+          <div class="order-card-top">
+            <strong>Pedido #4821</strong>
+            <span class="status status-progress">A caminho</span>
+          </div>
+          <p class="muted small">6 itens • R$ 78,40</p>
+          <p class="muted small">Chegada prevista: hoje, 14:20</p>
+        </div>
+        <div class="order-card">
+          <div class="order-card-top">
+            <strong>Pedido #4790</strong>
+            <span class="status status-done">Entregue</span>
+          </div>
+          <p class="muted small">11 itens • R$ 142,10</p>
+          <p class="muted small">Entregue em 03/08</p>
+        </div>
+        <div class="order-card">
+          <div class="order-card-top">
+            <strong>Pedido #4755</strong>
+            <span class="status status-done">Entregue</span>
+          </div>
+          <p class="muted small">4 itens • R$ 39,90</p>
+          <p class="muted small">Entregue em 28/07</p>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="view-home"><span>🏠</span>Início</button>
+        <button class="nav-item" data-nav="view-search"><span>🔍</span>Buscar</button>
+        <button class="nav-item" data-nav="view-cart"><span>🛒</span>Carrinho<span class="badge" id="cart-badge-2">0</span></button>
+        <button class="nav-item active" data-nav="view-orders"><span>📦</span>Pedidos</button>
+        <button class="nav-item" data-nav="view-profile"><span>👤</span>Perfil</button>
+      </nav>
+    </section>
 
-  <!-- ORDER SUCCESS / TRACKING -->
-  <div class="screen" id="scr-tracking">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-orders')">←</div><div class="back-title">Pedido #<span id="track-id">12345</span></div></div>
-    <div class="pad" style="text-align:center; padding-bottom:6px;">
-      <div style="font-size:44px;">✅</div>
-      <h3 style="margin-top:6px;">Pedido confirmado!</h3>
-      <p style="font-size:12px; color:var(--gray); margin-top:4px;">Chega em aproximadamente 30 minutos</p>
-    </div>
-    <div class="track-step" style="margin-top:16px;">
-      <div class="track-line"><div class="track-dot"></div><div class="track-bar"></div></div>
-      <div class="track-content"><h5>Pedido recebido</h5><p>Confirmamos seu pedido</p></div>
-    </div>
-    <div class="track-step">
-      <div class="track-line"><div class="track-dot"></div><div class="track-bar"></div></div>
-      <div class="track-content"><h5>Em separação</h5><p>Estamos preparando seus itens</p></div>
-    </div>
-    <div class="track-step">
-      <div class="track-line"><div class="track-dot pending"></div><div class="track-bar pending"></div></div>
-      <div class="track-content"><h5 style="color:var(--gray);">Saiu para entrega</h5><p>Previsão: 18:40</p></div>
-    </div>
-    <div class="track-step">
-      <div class="track-line"><div class="track-dot pending"></div></div>
-      <div class="track-content"><h5 style="color:var(--gray);">Entregue</h5><p>—</p></div>
-    </div>
-    <div class="pad" style="margin-top:auto;">
-      <button class="btn btn-blue" onclick="toast('Abrindo mapa de acompanhamento')">Acompanhar no mapa</button>
-    </div>
-  </div>
+    <!-- PROFILE -->
+    <section class="view" id="view-profile">
+      <div class="topnav">
+        <button class="icon-btn" data-nav="view-home">←</button>
+        <span class="topnav-title">Perfil</span>
+        <span style="width:36px"></span>
+      </div>
+      <div class="scroll-area pad">
+        <div class="profile-card">
+          <div class="avatar">A</div>
+          <div>
+            <strong>Ana Souza</strong>
+            <p class="muted small">ana@email.com</p>
+          </div>
+        </div>
+        <div class="menu-list">
+          <div class="menu-item">📍 Meus endereços</div>
+          <div class="menu-item">💳 Pagamentos</div>
+          <div class="menu-item">📦 Histórico de pedidos</div>
+          <div class="menu-item">🔔 Notificações</div>
+          <div class="menu-item">❓ Ajuda e suporte</div>
+          <div class="menu-item danger">↩ Sair</div>
+        </div>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="view-home"><span>🏠</span>Início</button>
+        <button class="nav-item" data-nav="view-search"><span>🔍</span>Buscar</button>
+        <button class="nav-item" data-nav="view-cart"><span>🛒</span>Carrinho<span class="badge" id="cart-badge-3">0</span></button>
+        <button class="nav-item" data-nav="view-orders"><span>📦</span>Pedidos</button>
+        <button class="nav-item active" data-nav="view-profile"><span>👤</span>Perfil</button>
+      </nav>
+    </section>
 
-  <!-- ORDERS -->
-  <div class="screen" id="scr-orders">
-    <div class="topbar" style="border-radius:0 0 22px 22px; padding-bottom:16px;">
-      <div class="brand-name light" style="font-size:17px;">Meus pedidos</div>
-    </div>
-    <div class="filter-chip-row"><div class="chip active">Todos</div><div class="chip">Em andamento</div><div class="chip">Concluídos</div></div>
-    <div id="orders-list"></div>
-    <div id="nav-orders"></div>
   </div>
-
-  <!-- PROFILE -->
-  <div class="screen" id="scr-profile">
-    <div class="profile-head">
-      <div class="avatar">A</div>
-      <div><div style="font-weight:700; font-size:15px;">Ana Silva</div><div style="font-size:12px; color:var(--gray);">Ver meu perfil</div></div>
-    </div>
-    <div class="list-row" onclick="toast('Editando dados pessoais')"><span class="li-icon">👤</span><span class="lbl">Meus dados</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="go('scr-addresses')"><span class="li-icon">📍</span><span class="lbl">Endereços</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="go('scr-paymentmethods')"><span class="li-icon">💳</span><span class="lbl">Formas de pagamento</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="toast('Abrindo lista de compras')"><span class="li-icon">📝</span><span class="lbl">Lista de compras</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="toast('Programa de fidelidade em breve')"><span class="li-icon">🎁</span><span class="lbl">Favoritos e cupons</span><span class="chev">›</span></div>
-    <div class="list-row"><span class="li-icon">🔔</span><span class="lbl">Notificações</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-    <div class="list-row"><span class="li-icon">🌙</span><span class="lbl">Modo escuro</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-    <div class="list-row" onclick="toast('Central de segurança')"><span class="li-icon">🔒</span><span class="lbl">Segurança e privacidade</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="toast('tá no carrinho v1.0')"><span class="li-icon">ℹ️</span><span class="lbl">Sobre o aplicativo</span><span class="chev">›</span></div>
-    <div class="list-row" onclick="go('scr-onb1')"><span class="li-icon" style="background:#fdecea;">🚪</span><span class="lbl" style="color:#d64545;">Sair da conta</span></div>
-    <div id="nav-profile"></div>
-  </div>
-
-  <div class="screen" id="scr-addresses">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-profile')">←</div><div class="back-title">Endereços</div></div>
-    <div class="section">
-      <div class="option-card selected"><span class="option-icon">🏠</span><div><h5>Casa · Principal</h5><p>Av. Paulista, 1000 — São Paulo, SP</p></div></div>
-      <div class="option-card"><span class="option-icon">💼</span><div><h5>Trabalho</h5><p>R. Augusta, 500 — São Paulo, SP</p></div></div>
-    </div>
-    <div class="pad"><button class="btn btn-outline" onclick="toast('Novo endereço salvo')">+ Adicionar endereço</button></div>
-  </div>
-
-  <div class="screen" id="scr-paymentmethods">
-    <div class="back-row"><div class="back-btn" onclick="go('scr-profile')">←</div><div class="back-title">Formas de pagamento</div></div>
-    <div class="section">
-      <div class="option-card selected"><span class="option-icon">💳</span><div><h5>Cartão de Crédito</h5><p>•••• 4242 · Principal</p></div></div>
-      <div class="option-card"><span class="option-icon">💳</span><div><h5>Cartão de Débito</h5><p>•••• 1234</p></div></div>
-      <div class="option-card"><span class="option-icon">💠</span><div><h5>PIX</h5><p>ana.silva@email.com</p></div></div>
-    </div>
-    <div class="pad"><button class="btn btn-outline" onclick="toast('Novo cartão salvo')">+ Adicionar cartão</button></div>
-  </div>
-
-  <div class="bottomnav" id="bottomnav" style="display:none;">
-    <div class="nav-item" data-tab="home" onclick="navTo('home')"><span class="ic">🏠</span>Início</div>
-    <div class="nav-item" data-tab="cat" onclick="navTo('cat')"><span class="ic">📂</span>Categorias</div>
-    <div class="nav-item" data-tab="cart" onclick="navTo('cart')"><span class="ic">🛒</span>Carrinho</div>
-    <div class="nav-item" data-tab="orders" onclick="navTo('orders')"><span class="ic">📦</span>Pedidos</div>
-    <div class="nav-item" data-tab="profile" onclick="navTo('profile')"><span class="ic">👤</span>Perfil</div>
-  </div>
-
-  <div class="toast" id="toast"></div>
 </div>
 
-<script>
-/* ---------------- DATA ---------------- */
-const categories = [
-  {name:'Hortifruti', emoji:'🥦'},
-  {name:'Açougue', emoji:'🥩'},
-  {name:'Padaria', emoji:'🍞'},
-  {name:'Bebidas', emoji:'🥤'},
-  {name:'Congelados', emoji:'🧊'},
-  {name:'Limpeza', emoji:'🧴'},
-  {name:'Higiene', emoji:'🧼'},
-  {name:'Pet Shop', emoji:'🐾'},
-];
-
-const products = [
-  {id:1, name:'Maçã Gala', unit:'kg', price:6.99, cat:'Hortifruti', emoji:'🍎', off:true, desc:'A maçã Gala é doce e suculenta, perfeita para o dia a dia. Rica em fibras e vitaminas.', rating:4.8, reviews:132},
-  {id:2, name:'Banana Prata', unit:'kg', price:3.49, cat:'Hortifruti', emoji:'🍌', off:true, desc:'Banana prata fresca e selecionada, ótima fonte de potássio e energia.', rating:4.7, reviews:98},
-  {id:3, name:'Tomate', unit:'kg', price:5.90, cat:'Hortifruti', emoji:'🍅', off:false, desc:'Tomates maduros e suculentos, direto do produtor.', rating:4.5, reviews:64},
-  {id:4, name:'Alface Crespa', unit:'un', price:2.99, cat:'Hortifruti', emoji:'🥬', off:false, desc:'Alface fresca colhida no mesmo dia, ideal para saladas.', rating:4.6, reviews:41},
-  {id:5, name:'Pão de Forma', unit:'500g', price:8.49, cat:'Padaria', emoji:'🍞', off:true, desc:'Pão de forma macio, sem conservantes, feito diariamente.', rating:4.7, reviews:87},
-  {id:6, name:'Leite Integral', unit:'1L', price:5.29, cat:'Bebidas', emoji:'🥛', off:false, desc:'Leite integral pasteurizado, rico em cálcio.', rating:4.6, reviews:110},
-  {id:7, name:'Peito de Frango', unit:'kg', price:16.90, cat:'Açougue', emoji:'🍗', off:false, desc:'Peito de frango fresco, sem osso, ideal para o dia a dia.', rating:4.8, reviews:76},
-  {id:8, name:'Café Torrado', unit:'500g', price:14.90, cat:'Bebidas', emoji:'☕', off:false, desc:'Café 100% arábica, torra média, aroma intenso.', rating:4.9, reviews:203},
-  {id:9, name:'Detergente', unit:'un', price:2.49, cat:'Limpeza', emoji:'🧴', off:false, desc:'Detergente neutro concentrado, rende mais lavagens.', rating:4.4, reviews:52},
-  {id:10, name:'Sabonete', unit:'un', price:2.19, cat:'Higiene', emoji:'🧼', off:false, desc:'Sabonete hidratante para todos os tipos de pele.', rating:4.5, reviews:39},
-  {id:11, name:'Ração para Cães', unit:'1kg', price:19.90, cat:'Pet Shop', emoji:'🐶', off:false, desc:'Ração premium balanceada para cães adultos.', rating:4.7, reviews:65},
-  {id:12, name:'Pizza Congelada', unit:'un', price:12.90, cat:'Congelados', emoji:'🍕', off:true, desc:'Pizza congelada de mussarela, pronta em 15 minutos no forno.', rating:4.3, reviews:48},
-];
-
-let cart = []; // {id, qty}
-let currentProduct = null;
-let pdQty = 1;
-let activeCategory = 'Todas';
-let lastScreen = 'scr-home';
-let orderCounter = 12346;
-let orders = [
-  {id:12345, status:'progress', items:3, total:24.17, date:'23/06/2024 · 10:32'},
-  {id:12344, status:'done', items:5, total:30.80, date:'22/06/2024 · 18:45'},
-  {id:12343, status:'done', items:2, total:15.60, date:'21/06/2024 · 09:10'},
-];
-
-const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
-
-/* ---------------- NAV ---------------- */
-function go(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const hasNav = ['scr-home','scr-catlist','scr-cart','scr-orders','scr-profile'].includes(id);
-  document.getElementById('bottomnav').style.display = hasNav ? 'flex' : 'none';
-  if(hasNav){
-    let tab = {'scr-home':'home','scr-catlist':'cat','scr-cart':'cart','scr-orders':'orders','scr-profile':'profile'}[id];
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.tab===tab));
-  }
-  if(id!=='scr-product') lastScreen = id;
-  window.scrollTo(0,0);
-  renderAll();
-}
-function goBackFrom(id){ go(lastScreen); }
-function navTo(tab){
-  const map = {home:'scr-home', cat:'scr-catlist', cart:'scr-cart', orders:'scr-orders', profile:'scr-profile'};
-  go(map[tab]);
-}
-function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(window._tt);
-  window._tt = setTimeout(()=>t.classList.remove('show'), 2200);
-}
-
-/* ---------------- RENDER ---------------- */
-function productCard(p){
-  return `<div class="prod-card" onclick="openProduct(${p.id})">
-    ${p.off?'<span class="badge-off">OFERTA</span>':''}
-    <div class="prod-img">${p.emoji}</div>
-    <div class="prod-name">${p.name}</div>
-    <div class="prod-unit">Preço por ${p.unit}</div>
-    <div class="prod-row"><div class="prod-price">${fmt(p.price)}</div><button class="add-fab" onclick="event.stopPropagation(); quickAdd(${p.id})">+</button></div>
-  </div>`;
-}
-
-function renderHome(){
-  document.getElementById('home-cats').innerHTML = categories.map(c=>`
-    <div class="cat-item" onclick="openCategory('${c.name}')">
-      <div class="cat-circle">${c.emoji}</div><span>${c.name}</span>
-    </div>`).join('');
-  document.getElementById('home-offers').innerHTML = products.filter(p=>p.off).map(p=>`<div style="min-width:140px;">${productCard(p)}</div>`).join('');
-  document.getElementById('home-reco').innerHTML = products.slice(0,4).map(productCard).join('');
-  updateCartBadge();
-}
-
-function openCategory(name){
-  activeCategory = name;
-  go('scr-catlist');
-}
-
-function renderCatList(){
-  document.getElementById('catlist-title').textContent = activeCategory==='Todas' ? 'Todas as categorias' : activeCategory;
-  document.getElementById('cat-chips').innerHTML = ['Todas',...categories.map(c=>c.name)].map(name=>
-    `<div class="chip ${activeCategory===name?'active':''}" onclick="activeCategory='${name}'; renderCatList();">${name}</div>`
-  ).join('');
-  const list = activeCategory==='Todas' ? products : products.filter(p=>p.cat===activeCategory);
-  document.getElementById('catlist-products').innerHTML = list.map(productCard).join('') || '<p style="padding:20px; color:var(--gray); font-size:13px;">Nenhum produto encontrado.</p>';
-}
-
-function openProduct(id){
-  currentProduct = products.find(p=>p.id===id);
-  pdQty = 1;
-  document.getElementById('pd-hero').textContent = currentProduct.emoji;
-  document.getElementById('pd-name').textContent = currentProduct.name;
-  document.getElementById('pd-unit').textContent = 'Preço por ' + currentProduct.unit + ' · Origem: Brasil';
-  document.getElementById('pd-rating').innerHTML = '';
-  document.getElementById('pd-rating').outerHTML = `<div class="pd-rating" id="pd-rating">⭐ ${currentProduct.rating} <span style="color:var(--line);">|</span> ${currentProduct.reviews} avaliações</div>`;
-  document.getElementById('pd-price').textContent = fmt(currentProduct.price);
-  document.getElementById('pd-desc').textContent = currentProduct.desc;
-  document.getElementById('pd-qty').textContent = pdQty;
-  document.getElementById('pd-total').textContent = fmt(currentProduct.price*pdQty);
-  go('scr-product');
-}
-function changeQty(delta){
-  pdQty = Math.max(1, pdQty+delta);
-  document.getElementById('pd-qty').textContent = pdQty;
-  document.getElementById('pd-total').textContent = fmt(currentProduct.price*pdQty);
-}
-function addToCartFromDetail(){
-  addToCart(currentProduct.id, pdQty);
-  toast(currentProduct.name + ' adicionado ao carrinho');
-  updateCartBadge();
-}
-function quickAdd(id){
-  addToCart(id,1);
-  toast('Item adicionado ao carrinho');
-  updateCartBadge();
-}
-function addToCart(id, qty){
-  const item = cart.find(c=>c.id===id);
-  if(item) item.qty += qty; else cart.push({id, qty});
-}
-function updateCartBadge(){
-  const total = cart.reduce((s,c)=>s+c.qty,0);
-  const b = document.getElementById('cart-badge-home');
-  if(b) b.textContent = total;
-}
-
-function renderCart(){
-  const list = document.getElementById('cart-list');
-  const empty = document.getElementById('cart-empty');
-  const summary = document.getElementById('cart-summary-wrap');
-  if(cart.length===0){
-    list.innerHTML=''; empty.style.display='flex'; summary.style.display='none';
-    return;
-  }
-  empty.style.display='none'; summary.style.display='block';
-  list.innerHTML = cart.map(c=>{
-    const p = products.find(x=>x.id===c.id);
-    return `<div class="cart-item">
-      <div class="cart-img">${p.emoji}</div>
-      <div class="cart-info"><h4>${p.name}</h4><div class="sub">${fmt(p.price)} / ${p.unit}</div></div>
-      <div class="cart-qty">
-        <button onclick="cartQty(${p.id},-1)">−</button>
-        <span>${c.qty}</span>
-        <button onclick="cartQty(${p.id},1)">+</button>
-      </div>
-    </div>`;
-  }).join('');
-  const subtotal = cart.reduce((s,c)=>{const p=products.find(x=>x.id===c.id); return s+p.price*c.qty;},0);
-  const delivery = subtotal>0 ? 6.90 : 0;
-  document.getElementById('cart-subtotal').textContent = fmt(subtotal);
-  document.getElementById('cart-delivery').textContent = fmt(delivery);
-  document.getElementById('cart-total').textContent = fmt(subtotal+delivery);
-  document.getElementById('pay-subtotal').textContent = fmt(subtotal);
-  document.getElementById('pay-total').textContent = fmt(subtotal+delivery);
-}
-function cartQty(id, delta){
-  const item = cart.find(c=>c.id===id);
-  if(!item) return;
-  item.qty += delta;
-  if(item.qty<=0) cart = cart.filter(c=>c.id!==id);
-  renderCart();
-  updateCartBadge();
-}
-function selectPay(el){
-  document.querySelectorAll('#scr-payment .option-card').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function confirmOrder(){
-  if(cart.length===0){ toast('Seu carrinho está vazio'); return; }
-  const subtotal = cart.reduce((s,c)=>{const p=products.find(x=>x.id===c.id); return s+p.price*c.qty;},0);
-  orderCounter++;
-  orders.unshift({id:orderCounter, status:'progress', items:cart.reduce((s,c)=>s+c.qty,0), total:subtotal+6.90, date:'Hoje · agora'});
-  document.getElementById('track-id').textContent = orderCounter;
-  cart = [];
-  updateCartBadge();
-  go('scr-tracking');
-}
-
-function renderOrders(){
-  document.getElementById('orders-list').innerHTML = orders.map(o=>`
-    <div class="order-card" onclick="document.getElementById('track-id').textContent='${o.id}'; go('scr-tracking');">
-      <div class="order-top"><h5>Pedido #${o.id}</h5><span class="status-pill ${o.status}">${o.status==='progress'?'Em andamento':'Entregue'}</span></div>
-      <div class="order-meta">${o.items} itens · ${o.date}</div>
-      <div class="order-total">Total: ${fmt(o.total)}</div>
-    </div>`).join('');
-}
-
-function renderAll(){
-  const active = document.querySelector('.screen.active').id;
-  if(active==='scr-home') renderHome();
-  if(active==='scr-catlist') renderCatList();
-  if(active==='scr-cart') renderCart();
-  if(active==='scr-orders') renderOrders();
-  if(active==='scr-payment') renderCart();
-  updateCartBadge();
-}
-
-renderAll();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
